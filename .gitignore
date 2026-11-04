@@ -42,3 +42,127 @@ terraform.rc
 # Optional: ignore plan files saved before destroying Terraform configuration
 # Uncomment the line below if you want to ignore planout files.
 # planout
+# ---------------------------------------------------------------------------
+# Terraform extras
+# ---------------------------------------------------------------------------
+# Keep the example tfvars files committed
+!*.tfvars.example
+*.tfplan
+tfplan
+*.tfstate.backup
+.terraform.d/
+# NOTE: .terraform.lock.hcl SHOULD be committed (pins provider versions)
+
+# ---------------------------------------------------------------------------
+# Secrets, keys, certificates
+# ---------------------------------------------------------------------------
+*.pem
+*.key
+*.crt
+*.cer
+*.der
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.csr
+*.gpg
+*.asc
+*.age
+age.key
+keys.txt
+id_rsa
+id_rsa.*
+id_ed25519
+id_ed25519.*
+id_ecdsa
+id_ecdsa.*
+id_dsa
+*.ppk
+# Public keys are not secret but are usually machine-specific; remove if you want to commit them
+# *.pub
+
+# ---------------------------------------------------------------------------
+# Env files, tokens, credentials
+# ---------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.env
+.envrc
+.direnv/
+secrets/
+secret/
+.secrets/
+private/
+credentials
+credentials.*
+*.credentials
+*secret*.yaml
+*secret*.yml
+*secret*.json
+!*secret*.example.*
+!*secret*.sops.*
+token
+token.*
+*.token
+.netrc
+.htpasswd
+auth.json
+service-account*.json
+.cloudflared/
+cert.pem
+.hcloud/
+cli.toml
+
+# ---------------------------------------------------------------------------
+# Kubernetes / k3s / GitOps
+# ---------------------------------------------------------------------------
+kubeconfig
+kubeconfig.*
+*.kubeconfig
+*.kubeconfig.yaml
+k3s.yaml
+.kube/
+node-token
+.helm/
+charts/*.tgz
+
+# ---------------------------------------------------------------------------
+# Local state, backups, dumps, logs
+# ---------------------------------------------------------------------------
+*.bak
+*.backup
+*.orig
+*.swp
+*.swo
+*~
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+*.sql
+*.dump
+*.db
+*.sqlite
+*.log
+*.pid
+local/
+tmp/
+temp/
+scratch/
+.cache/
+
+# ---------------------------------------------------------------------------
+# Tooling / editors / OS
+# ---------------------------------------------------------------------------
+.idea/
+.vscode/
+*.code-workspace
+.DS_Store
+Thumbs.db
+.claude/settings.local.json
+.python-version
+venv/
+.venv/
+node_modules/

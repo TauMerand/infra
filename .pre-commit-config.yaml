@@ -1,0 +1,37 @@
+# Setup:          pre-commit install
+# Run everything: pre-commit run --all-files
+# Bump pins:      pre-commit autoupdate
+#
+# Requires on PATH: tofu, tflint
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: check-yaml
+        args: [--allow-multiple-documents]
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.0
+    hooks:
+      - id: gitleaks
+
+  - repo: local
+    hooks:
+      - id: tofu-fmt
+        name: tofu fmt
+        entry: tofu fmt -recursive
+        language: system
+        files: \.(tf|tfvars)$
+        pass_filenames: false
+      - id: tflint
+        name: tflint
+        entry: tflint --recursive
+        language: system
+        files: \.tf$
+        pass_filenames: false
