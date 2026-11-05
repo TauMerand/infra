@@ -1,0 +1,4 @@
+# Copy to terraform.tfvars (gitignored) and fill in.
+account_id  = "your-cloudflare-account-id"
+bucket_name = "your-unique-tfstate-bucket"
+# location  = "weur"

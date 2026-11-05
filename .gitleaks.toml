@@ -1,0 +1,39 @@
+title = "infra gitleaks config"
+
+[extend]
+# Keep all of gitleaks' built-in rules (Cloudflare tokens, private keys, generic API keys, ...)
+useDefault = true
+
+# OpenTofu state encryption passphrase. It must only ever live in the TF_ENCRYPTION
+# environment variable or a password manager, never in a file.
+[[rules]]
+id = "tofu-encryption-passphrase"
+description = "OpenTofu state encryption passphrase committed in a file"
+regex = '''(?i)passphrase\s*=\s*["'][^"'\s<>]{8,}["']'''
+keywords = ["passphrase"]
+
+# TF_ENCRYPTION=... with an inline key provider, as it would appear if an export line was saved.
+[[rules]]
+id = "tf-encryption-env"
+description = "TF_ENCRYPTION assignment containing a literal passphrase"
+regex = '''(?i)TF_ENCRYPTION\s*[=:]\s*['"]?[^\n]*passphrase\s*=\s*\\?["'][^"'\s<>]{8,}'''
+keywords = ["tf_encryption"]
+
+# S3-style credentials for the R2 state backend.
+[[rules]]
+id = "aws-secret-access-key-env"
+description = "AWS_SECRET_ACCESS_KEY (used for the R2 backend) set to a literal value"
+regex = '''(?i)AWS_SECRET_ACCESS_KEY\s*[=:]\s*['"]?[A-Za-z0-9/+=]{20,}'''
+keywords = ["aws_secret_access_key"]
+
+[[rules]]
+id = "r2-secret-access-key"
+description = "Cloudflare R2 S3 secret access key (64 hex characters)"
+regex = '''(?i)(?:r2|secret)[\w\s"':=.-]{0,40}['"\s=:]([0-9a-f]{64})\b'''
+secretGroup = 1
+keywords = ["r2", "secret"]
+
+[allowlist]
+description = "Global allowlist"
+# Don't scan gitleaks' own config, which contains the patterns above.
+paths = ['''^\.gitleaks\.toml$''']
