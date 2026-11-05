@@ -1,0 +1,28 @@
+# Example backend block for OTHER stacks (not this one). Copy into each stack as backend.tf
+# and change `key` per stack, e.g. "envs/prod/cluster/terraform.tfstate".
+#
+# Also copy encryption.tf from terraform/bootstrap: every stack needs the same encryption block and TF_ENCRYPTION.
+# Credentials - export cloudflare R2 creds:
+#   export AWS_ACCESS_KEY_ID=...
+#   export AWS_SECRET_ACCESS_KEY=...
+terraform {
+  backend "s3" {
+    bucket = "tfstate-bucket"
+    key    = "shared/cloudflare/terraform.tfstate"
+    region = "auto"
+
+    endpoints = {
+      s3 = "https://7c5cb8402636f4ad743837d1d9c66e8b.r2.cloudflarestorage.com"
+    }
+
+    # R2 is not AWS: skip the AWS-specific checks.
+    skip_credentials_validation = true
+    skip_region_validation      = true
+    skip_requesting_account_id  = true
+    skip_metadata_api_check     = true
+    skip_s3_checksum            = true
+    use_path_style              = true
+
+    use_lockfile = true
+  }
+}
